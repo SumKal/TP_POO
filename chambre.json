@@ -1,1 +1,1 @@
-[{"numeroChambre": 1, "type": "Simple", "capacite": "2", "prixParNuit": "23", "statut": "Disponible"}, {"numeroChambre": "3", "type": "Suite", "capacite": "2", "prixParNuit": "1000", "statut": "Disponible"}]
+[{"numeroChambre": 1, "type": "Simple", "capacite": "2", "prixParNuit": "23", "statut": "Occup\u00e9e"}, {"numeroChambre": 2, "type": "Double", "capacite": "4", "prixParNuit": "120", "statut": "Disponible"}]

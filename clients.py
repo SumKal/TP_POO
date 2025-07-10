@@ -4,7 +4,7 @@ import json
 clients=[]
 class Client:
     def __init__(self,idClient=0,nom="", prenom="",telephone="",email=""):
-        print("DEBUG: Création d'un client")
+
         self._idClient=idClient
         self._nom=nom
         self._prenom=prenom
@@ -127,6 +127,15 @@ class Client:
         cli = []
         for sub in clients:
             if sub["nom"] == nomClient:
+                cli.append(sub)
+        return cli
+
+    def rechercheById(self,idClient=""):
+        if (idClient == ""):
+            idClient = input("Entrez le nom du client à rechercher: ")
+        cli = []
+        for sub in clients:
+            if sub["idClient"] == idClient:
                 cli.append(sub)
         return cli
 

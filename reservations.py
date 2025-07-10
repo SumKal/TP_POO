@@ -1,10 +1,11 @@
 from clients import *
 from chambre import *
+from datetime import date
 
 reservations=[]
 
 class Reservation:
-    def __init__(self,idReservation,dateArrivee,dateDepart,dateCreation,statut,montantTotal,idClient,numeroChambre):
+    def __init__(self,idReservation="",dateArrivee="",dateDepart="",dateCreation="",statut="",montantTotal="",idClient="",numeroChambre=""):
         self._idReservation=idReservation
         self._dateArrivee=dateArrivee
         self._dateDepart=dateDepart
@@ -60,7 +61,7 @@ class Reservation:
     def montantTotal(self):
         return self._montantTotal
 
-    @montantTotal
+    @montantTotal.setter
     def montantTotal(self,newMontantTotal):
         self._montantTotal=newMontantTotal
 
@@ -101,15 +102,56 @@ class Reservation:
     def saveReservation(self, ell):
         """Enregistrement du fichier JSON dans la base de données"""
 
-        with open('reservations.json', 'w') as f:
+        with open('reservation.json', 'w') as f:
             json.dump(ell, f)
 
     def ajoutReservation(self):
         """Fonction d'ajour d'un client dans la base de donnée mais avant vérification des informations entreée"""
         # Incrémentation du dernier id récupéré
+        self._dateArrivee = input("Entrez la date d'arrivée (JJ/MM/AAAA) : ")
+        self._dateDepart = input("Entrez la date de départ (JJ/MM/AAAA): ")
+        self._dateCreation = date.today()
+        self._statut = input("Entrez le statut de la réservation (Confirmée, Annulée, En cours): ")
+        self._montantTotal = int(input("Entrez le montant total: "))
+
+        self._idClient = int(input("Entrez l'ID du client: "))
+        while (self.verificationClient(self._idClient)==False):
+            print("Client introuvable !!!")
+            self._idClient = int(input("Entrez l'ID du client: "))
+
+        self._numeroChambre = int(input("Entrez le numéro de la chambre: "))
+        while (self.verificationChambre(self._numeroChambre)==False):
+
+            self._numeroChambre = int(input("Entrez le numéro d'une chambre valide: "))
+
+        #Changement du statut de la chambre
+        Chambre().modificationDisponibliteChambre(self._numeroChambre)
+
         self._idReservation = self.getId() + 1
         reservation = {'idReservation': self._idReservation, 'dateArrivee': self._dateArrivee, "dateDepart": self._dateDepart,
-                   'dateCreation': self._dateCreation, 'statut': self._statut, "montantTotal":self._montantTotal, "idClient":self._idClient,"numeroChambre":self._numeroChambre}
+                   'dateCreation': str(self._dateCreation), 'statut': self._statut, "montantTotal":self._montantTotal, "idClient":self._idClient,"numeroChambre":self._numeroChambre}
+
         reservations.append(reservation)
         self.saveReservation(reservations)
-        print("La réservation a été faite avec succès !!!")
+        print("\nLa réservation a été faite avec succès !!!")
+
+
+    def verificationClient(self,idClient):
+        valeur=Client().rechercheById(idClient)
+        if (len(valeur)==0):
+            return False
+        else:
+            return True
+
+    def verificationChambre(self,idChambre):
+        valeur=Chambre().rechercherChambre(idChambre)
+
+        if (len(valeur)==0):
+            print("La chambre n'existe pas")
+            return False
+        else:
+            if(Chambre().verificationDisponibiliteChambre(idChambre)==False):
+                print("La chambre non disponible")
+                return False
+            else:
+                return True

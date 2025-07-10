@@ -91,6 +91,28 @@ class Chambre:
                 cli.append(sub)
         return cli
 
+    def rechercheChambreDisponible(self):
+        cli = []
+        for sub in chambres:
+            if sub["statut"] == "Disponible":
+                cli.append(sub)
+        return cli
+
+    def verificationDisponibiliteChambre(self,numeroChambre=""):
+        if (numeroChambre == ""):
+            numeroChambre = int(input("Entrez le numéro de la chambre à rechercher: "))
+        cli = []
+        for sub in chambres:
+            if sub["numeroChambre"] == numeroChambre:
+                cli.append(sub)
+        if(len(cli)==0):
+            print("Chambre introuvable")
+        else:
+            if(cli[0]['statut']!="Disponible"):
+                return False
+            else:
+                return True
+
     def suppressionChambre(self):
         numeroChambre = int(input("Entrer le numéro de la chambre à supprimer: "))
         prod = []
@@ -123,3 +145,12 @@ class Chambre:
             self.saveChambre(chambres)
         else:
             print("Aucune chambre ne porte ce numéro.")
+
+
+    def modificationDisponibliteChambre(self,idChambre):
+        cli = self.rechercherChambre(idChambre)[0]
+        position = chambres.index(self.rechercherChambre(idChambre)[0])
+        chambres.remove(self.rechercherChambre(idChambre)[0])
+        cli["statut"] = "Occupée"
+        chambres.insert(position, cli)
+        self.saveChambre(chambres)

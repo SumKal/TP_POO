@@ -1,7 +1,7 @@
 from operator import truediv
 
-from clients import *
-from chambre import *
+#from clients import *
+#from chambre import *
 from reservations import *
 from datetime import date
 
@@ -23,7 +23,7 @@ class Hotel:
             return True
         else:
             return False
-)
+
 
     def gestion(self):
         orientation = 1
@@ -85,7 +85,13 @@ class Hotel:
                         Chambre().suppressionChambre()
 
                     elif(verification==4):
-                        print("Afficher la liste des chambres disponibles")
+
+                        value=Chambre().rechercheChambreDisponible()
+                        if(len(value)==0):
+                            print("Aucune chambre disponible")
+                        else:
+                            for i in value:
+                                print(i)
 
                     elif(verification==5):
                         break
@@ -102,17 +108,21 @@ class Hotel:
                     print("Entrez [0] pour quitter\n")
                     question=int(input("REPONSE: "))
                     if(question==1):
-                        dateArrivee=input("Entrez la date d'arrivée (JJ/MM/AAAA) : ")
-                        dateDepart=input("Entrez la date de départ (JJ/MM/AAAA): ")
-                        dateCreation=date.today()
-                        statut=input("Entrez le statut de la réservation (Confirmée, Annulée, En cours): ")
-                        montantTotal=int(input("Entrez le montant total: "))
-                        idClient=int(input("Entrez l'ID du client: "))
-                        numeroChambre=int(input("Entrez le numéro de la chambre: "))
-                        reservation1=Reservation(0,dateArrivee,dateDepart,dateCreation,statut,montantTotal,idClient,numeroChambre)
+
+                        reservation1=Reservation()
                         reservation1.ajoutReservation()
                     elif(question==2):
                         print("Modifier la réservation")
+                    elif(question==3):
+                        print("Suppression de la réservation")
+                    elif(question==4):
+                        print("Marquer le client comme arrivé")
+                    elif(question==5):
+                        print("Marquer le client comme parti")
+                    elif(question==6):
+                        print("Consultation des réservations")
+                    elif(question==0):
+                        break
             elif (choix==0):
                 break
 
