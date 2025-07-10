@@ -1,5 +1,9 @@
+from operator import truediv
+
 from clients import *
 from chambre import *
+from reservations import *
+from datetime import date
 
 class Hotel:
     def __init__(self,nom):
@@ -13,6 +17,13 @@ class Hotel:
     @nom.setter
     def nom(self,newNom):
         self._nom=newNom
+
+    def verifierDate(self,dateDonne):
+        if(date.strptime(dateDonne, "%d/%m/%Y")):
+            return True
+        else:
+            return False
+)
 
     def gestion(self):
         orientation = 1
@@ -81,7 +92,27 @@ class Hotel:
             elif (choix==3):
                 #Gestion des réservation
                 """Gestion de la réservation"""
-                print("Gestion des réservations")
+                while True:
+                    print("\nEntrez [1] pour ajouter une réservation")
+                    print("Entrez [2] pour modifier une réservation")
+                    print("Entrez [3] pour supprimer une réservation")
+                    print("Entrez [4] pour marquer un client comme arrivé")
+                    print("Entrez [5] pour marquer un client comme parti")
+                    print("Entrez [6] pour consulter les réservations")
+                    print("Entrez [0] pour quitter\n")
+                    question=int(input("REPONSE: "))
+                    if(question==1):
+                        dateArrivee=input("Entrez la date d'arrivée (JJ/MM/AAAA) : ")
+                        dateDepart=input("Entrez la date de départ (JJ/MM/AAAA): ")
+                        dateCreation=date.today()
+                        statut=input("Entrez le statut de la réservation (Confirmée, Annulée, En cours): ")
+                        montantTotal=int(input("Entrez le montant total: "))
+                        idClient=int(input("Entrez l'ID du client: "))
+                        numeroChambre=int(input("Entrez le numéro de la chambre: "))
+                        reservation1=Reservation(0,dateArrivee,dateDepart,dateCreation,statut,montantTotal,idClient,numeroChambre)
+                        reservation1.ajoutReservation()
+                    elif(question==2):
+                        print("Modifier la réservation")
             elif (choix==0):
                 break
 
